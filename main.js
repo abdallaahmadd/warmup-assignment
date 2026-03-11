@@ -76,6 +76,23 @@ function addShiftRecord(textFile, shiftObj) {
     let idleTime = getIdleTime(shiftObj.startTime, shiftObj.endTime);
     let activeTime = getActiveTime(shiftDuration, idleTime);
     let met = metQuota(shiftObj.date, activeTime);
+     let newEntry = {
+        driverID: shiftObj.driverID,
+        driverName: shiftObj.driverName,
+        date: shiftObj.date,
+        startTime: shiftObj.startTime,
+        endTime: shiftObj.endTime,
+        shiftDuration,
+        idleTime,
+        activeTime,
+        metQuota: met,
+        hasBonus: false
+    };
+
+    data.push(Object.values(newEntry).join(","));
+    fs.writeFileSync(textFile, data.join("\n"));
+    return newEntry;
+}
     
 }
 
