@@ -53,22 +53,30 @@ function getActiveTime(shiftDuration, idleTime) {
 
 // ============================================================
 // Function 4: metQuota(date, activeTime)
-// date: (typeof string) formatted as yyyy-mm-dd
-// activeTime: (typeof string) formatted as h:mm:ss
-// Returns: boolean
-// ============================================================
 function metQuota(date, activeTime) {
-    // TODO: Implement this function
+  let activeSec = timeToSeconds(activeTime);
+    let quota = 8 * 3600 + 24 * 60; // 8h 24m
+    let d = new Date(date);
+    let eidStart = new Date("2025-04-10");
+    let eidEnd = new Date("2025-04-30");
+    if (d >= eidStart && d <= eidEnd) quota = 6 * 3600;
+    return activeSec >= quota;
+}
 }
 
 // ============================================================
 // Function 5: addShiftRecord(textFile, shiftObj)
-// textFile: (typeof string) path to shifts text file
-// shiftObj: (typeof object) has driverID, driverName, date, startTime, endTime
-// Returns: object with 10 properties or empty object {}
-// ============================================================
 function addShiftRecord(textFile, shiftObj) {
-    // TODO: Implement this function
+        let data = fs.readFileSync(textFile, "utf-8").trim().split("\n");
+    for (let row of data) {
+        let cols = row.split(",");
+        if (cols[0] === shiftObj.driverID && cols[2] === shiftObj.date) return {};
+    }
+    let shiftDuration = getShiftDuration(shiftObj.startTime, shiftObj.endTime);
+    let idleTime = getIdleTime(shiftObj.startTime, shiftObj.endTime);
+    let activeTime = getActiveTime(shiftDuration, idleTime);
+    let met = metQuota(shiftObj.date, activeTime);
+    
 }
 
 // ============================================================
