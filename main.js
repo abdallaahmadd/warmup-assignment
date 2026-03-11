@@ -42,14 +42,13 @@ let start = parseTime(startTime);
 
 }
 
-// ============================================================
+
 // Function 3: getActiveTime(shiftDuration, idleTime)
-// shiftDuration: (typeof string) formatted as h:mm:ss
-// idleTime: (typeof string) formatted as h:mm:ss
-// Returns: string formatted as h:mm:ss
-// ============================================================
 function getActiveTime(shiftDuration, idleTime) {
-    // TODO: Implement this function
+    let shiftSec = timeToSeconds(shiftDuration);
+    let idleSec = timeToSeconds(idleTime);
+    return secondsToTime(shiftSec - idleSec);
+}
 }
 
 // ============================================================
