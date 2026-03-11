@@ -1,6 +1,10 @@
 const fs = require("fs");
 
-// ============================================================
+// helper functions 
+function timeToSeconds(timeStr) {
+    let [h, m, s] = timeStr.split(":").map(Number);
+    return h * 3600 + m * 60 + s;
+}
 // Function 1: getShiftDuration(startTime, endTime)
 // startTime: (typeof string) formatted as hh:mm:ss am or hh:mm:ss pm
 // endTime: (typeof string) formatted as hh:mm:ss am or hh:mm:ss pm
