@@ -11,6 +11,13 @@ function secondsToTime(totalSeconds) {
     let s = totalSeconds % 60;
     return `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
 }
+function parseTime(timeStr) {
+    let [time, period] = timeStr.trim().split(" ");
+    let [h, m, s] = time.split(":").map(Number);
+    if (period.toLowerCase() === "pm" && h !== 12) h += 12;
+    if (period.toLowerCase() === "am" && h === 12) h = 0;
+    return new Date(2000, 0, 1, h, m, s);
+}
 // Function 1: getShiftDuration(startTime, endTime)
 // startTime: (typeof string) formatted as hh:mm:ss am or hh:mm:ss pm
 // endTime: (typeof string) formatted as hh:mm:ss am or hh:mm:ss pm
