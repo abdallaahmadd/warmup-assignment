@@ -110,19 +110,24 @@ function setBonus(textFile, driverID, date, newValue) {
     }
     fs.writeFileSync(textFile, data.join("\n"));
 }
-    // TODO: Implement this function
-
-
-// ============================================================
 // Function 7: countBonusPerMonth(textFile, driverID, month)
-// textFile: (typeof string) path to shifts text file
-// driverID: (typeof string)
-// month: (typeof string) formatted as mm or m
-// Returns: number (-1 if driverID not found)
-// ============================================================
+
 function countBonusPerMonth(textFile, driverID, month) {
-    // TODO: Implement this function
+    let data = fs.readFileSync(textFile, "utf-8").trim().split("\n");
+    let found = false, count = 0;
+    for (let row of data) {
+        let cols = row.split(",");
+        if (cols[0] === driverID) {
+            found = true;
+            let m = cols[2].split("-")[1];
+            if (parseInt(m) === parseInt(month) && cols[9] === "true") count++;
+        }
+    }
+    return found ? count : -1;
 }
+
+  
+
 
 // ============================================================
 // Function 8: getTotalActiveHoursPerMonth(textFile, driverID, month)
