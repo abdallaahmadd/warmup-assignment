@@ -27,15 +27,19 @@ function getShiftDuration(startTime, endTime) {
 }
 
 }
-
-// ============================================================
 // Function 2: getIdleTime(startTime, endTime)
-// startTime: (typeof string) formatted as hh:mm:ss am or hh:mm:ss pm
-// endTime: (typeof string) formatted as hh:mm:ss am or hh:mm:ss pm
-// Returns: string formatted as h:mm:ss
-// ============================================================
 function getIdleTime(startTime, endTime) {
-    // TODO: Implement this function
+let start = parseTime(startTime);
+    let end = parseTime(endTime);
+    let deliveryStart = new Date(2000, 0, 1, 8, 0, 0);
+    let deliveryEnd = new Date(2000, 0, 1, 22, 0, 0);
+
+    let idle = 0;
+    if (start < deliveryStart) idle += (Math.min(end, deliveryStart) - start) / 1000;
+    if (end > deliveryEnd) idle += (end - Math.max(start, deliveryEnd)) / 1000;
+    return secondsToTime(idle);
+}
+
 }
 
 // ============================================================
