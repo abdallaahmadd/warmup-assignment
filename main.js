@@ -26,7 +26,7 @@ function getShiftDuration(startTime, endTime) {
     return secondsToTime(diff);
 }
 
-}
+
 // Function 2: getIdleTime(startTime, endTime)
 function getIdleTime(startTime, endTime) {
 let start = parseTime(startTime);
@@ -40,7 +40,7 @@ let start = parseTime(startTime);
     return secondsToTime(idle);
 }
 
-}
+
 
 
 // Function 3: getActiveTime(shiftDuration, idleTime)
@@ -49,7 +49,7 @@ function getActiveTime(shiftDuration, idleTime) {
     let idleSec = timeToSeconds(idleTime);
     return secondsToTime(shiftSec - idleSec);
 }
-}
+
 
 // ============================================================
 // Function 4: metQuota(date, activeTime)
@@ -62,7 +62,7 @@ function metQuota(date, activeTime) {
     if (d >= eidStart && d <= eidEnd) quota = 6 * 3600;
     return activeSec >= quota;
 }
-}
+
 
 // ============================================================
 // Function 5: addShiftRecord(textFile, shiftObj)
@@ -94,19 +94,24 @@ function addShiftRecord(textFile, shiftObj) {
     return newEntry;
 }
     
-}
+
 
 // ============================================================
 // Function 6: setBonus(textFile, driverID, date, newValue)
-// textFile: (typeof string) path to shifts text file
-// driverID: (typeof string)
-// date: (typeof string) formatted as yyyy-mm-dd
-// newValue: (typeof boolean)
-// Returns: nothing (void)
-// ============================================================
 function setBonus(textFile, driverID, date, newValue) {
-    // TODO: Implement this function
+    let data = fs.readFileSync(textFile, "utf-8").trim().split("\n");
+    for (let i = 0; i < data.length; i++) {
+        let cols = data[i].split(",");
+        if (cols[0] === driverID && cols[2] === date) {
+            cols[9] = newValue;
+            data[i] = cols.join(",");
+            break;
+        }
+    }
+    fs.writeFileSync(textFile, data.join("\n"));
 }
+    // TODO: Implement this function
+
 
 // ============================================================
 // Function 7: countBonusPerMonth(textFile, driverID, month)
