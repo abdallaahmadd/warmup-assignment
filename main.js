@@ -5,6 +5,12 @@ function timeToSeconds(timeStr) {
     let [h, m, s] = timeStr.split(":").map(Number);
     return h * 3600 + m * 60 + s;
 }
+function secondsToTime(totalSeconds) {
+    let h = Math.floor(totalSeconds / 3600);
+    let m = Math.floor((totalSeconds % 3600) / 60);
+    let s = totalSeconds % 60;
+    return `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+}
 // Function 1: getShiftDuration(startTime, endTime)
 // startTime: (typeof string) formatted as hh:mm:ss am or hh:mm:ss pm
 // endTime: (typeof string) formatted as hh:mm:ss am or hh:mm:ss pm
