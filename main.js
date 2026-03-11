@@ -19,12 +19,13 @@ function parseTime(timeStr) {
     return new Date(2000, 0, 1, h, m, s);
 }
 // Function 1: getShiftDuration(startTime, endTime)
-// startTime: (typeof string) formatted as hh:mm:ss am or hh:mm:ss pm
-// endTime: (typeof string) formatted as hh:mm:ss am or hh:mm:ss pm
-// Returns: string formatted as h:mm:ss
-// ============================================================
 function getShiftDuration(startTime, endTime) {
-    // TODO: Implement this function
+    let start = parseTime(startTime);
+    let end = parseTime(endTime);
+    let diff = (end - start) / 1000;
+    return secondsToTime(diff);
+}
+
 }
 
 // ============================================================
