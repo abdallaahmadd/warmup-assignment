@@ -125,21 +125,20 @@ function countBonusPerMonth(textFile, driverID, month) {
     }
     return found ? count : -1;
 }
-
-  
-
-
-// ============================================================
 // Function 8: getTotalActiveHoursPerMonth(textFile, driverID, month)
-// textFile: (typeof string) path to shifts text file
-// driverID: (typeof string)
-// month: (typeof number)
-// Returns: string formatted as hhh:mm:ss
-// ============================================================
 function getTotalActiveHoursPerMonth(textFile, driverID, month) {
-    // TODO: Implement this function
+    let data = fs.readFileSync(textFile, "utf-8").trim().split("\n");
+    let total = 0;
+    for (let row of data) {
+        let cols = row.split(",");
+        if (cols[0] === driverID) {
+            let m = cols[2].split("-")[1];
+            if (parseInt(m) === month) total += timeToSeconds(cols[7]);
+        }
+    }
+    return secondsToTime(total);
 }
-
+    
 // ============================================================
 // Function 9: getRequiredHoursPerMonth(textFile, rateFile, bonusCount, driverID, month)
 // textFile: (typeof string) path to shifts text file
