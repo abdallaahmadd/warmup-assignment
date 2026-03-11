@@ -138,20 +138,36 @@ function getTotalActiveHoursPerMonth(textFile, driverID, month) {
     }
     return secondsToTime(total);
 }
-    
-// ============================================================
 // Function 9: getRequiredHoursPerMonth(textFile, rateFile, bonusCount, driverID, month)
-// textFile: (typeof string) path to shifts text file
-// rateFile: (typeof string) path to driver rates text file
-// bonusCount: (typeof number) total bonuses for given driver per month
-// driverID: (typeof string)
-// month: (typeof number)
-// Returns: string formatted as hhh:mm:ss
-// ============================================================
-function getRequiredHoursPerMonth(textFile, rateFile, bonusCount, driverID, month) {
-    // TODO: Implement this function
+function getRequiredHoursPerMonth(textFile, rateFile, bonusCount, driverID, month)  {
+    let shifts = fs.readFileSync(textFile, "utf-8").trim().split("\n");
+    let rates = fs.readFileSync(rateFile, "utf-8").trim().split("\n");
+    let dayOff;
+    for (let r of rates) {
+        let cols = r.split(",");
+        if (cols[0] === driverID) dayOff = cols[1];
+    }
+    let total = 0;
+    for (let row of shifts) {
+        let cols = row.split(",");
+        if (cols[0] === driverID) {
+            let d = new Date(cols[2]);
+            let m = d.getMonth() + 1;
+            if (m === month) {
+                let weekday = d.toLocaleDateString("en-US", { weekday: "long" });
+                if (weekday === dayOff) continue;
+                let quota = 8 * 3600 + 24 * 60;
+                let eidStart = new Date("2025-04-10");
+                let eidEnd = new Date("2025-04-30");
+                if (d >= eidStart && d <= eidEnd) quota = 6 * 3600;
+                total += quota;
+            }
+        }
+    }
+    total -= bonusCount * 2 * 3600;
+    return secondsToTime(total);
 }
-
+    
 // ============================================================
 // Function 10: getNetPay(driverID, actualHours, requiredHours, rateFile)
 // driverID: (typeof string)
